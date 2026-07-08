@@ -61,7 +61,7 @@ class SimulationRequest(BaseModel):
     )
 
     iterations: int = Field(
-        default=100,
+        default=50,
         ge=1,
         le=10000,
         description="Number of requests sent to each service.",
