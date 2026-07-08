@@ -1,0 +1,93 @@
+[build-system]
+requires = ["setuptools>=69.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reliability-simulator"
+version = "1.0.0"
+description = "Interactive distributed systems reliability simulator."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+
+authors = [
+    { name = "Your Name" }
+]
+
+keywords = [
+    "fastapi",
+    "distributed-systems",
+    "resilience",
+    "circuit-breaker",
+    "retry",
+    "chaos-engineering"
+]
+
+dependencies = [
+    "fastapi>=0.116.0",
+    "uvicorn[standard]>=0.35.0",
+    "pydantic>=2.11.0",
+    "python-multipart>=0.0.20"
+]
+
+[project.optional-dependencies]
+
+dev = [
+    "pytest>=8.4.0",
+    "pytest-cov>=6.2.1",
+    "httpx>=0.28.1",
+    "ruff>=0.12.0",
+    "black>=25.1.0",
+    "mypy>=1.17.0"
+]
+
+[tool.setuptools]
+
+packages = ["app"]
+
+[tool.black]
+
+line-length = 100
+target-version = ["py312"]
+
+[tool.ruff]
+
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+
+select = [
+    "E",
+    "F",
+    "I",
+    "B",
+    "UP"
+]
+
+[tool.pytest.ini_options]
+
+pythonpath = [
+    "."
+]
+
+testpaths = [
+    "tests"
+]
+
+addopts = "-ra -q"
+
+[tool.coverage.run]
+
+source = [
+    "app"
+]
+
+omit = [
+    "tests/*"
+]
+
+[tool.coverage.report]
+
+show_missing = true
+skip_covered = true
