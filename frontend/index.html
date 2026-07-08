@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Reliability Simulator</title>
+
+    <meta
+        name="description"
+        content="Interactive simulator demonstrating Circuit Breaker, Retry, and Chaos Engineering."
+    >
+
+    <link
+        rel="stylesheet"
+        href="/static/styles.css"
+    >
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- Header -->
+
+    <header class="hero">
+
+        <div class="hero-content">
+
+            <span class="badge">
+                Reliability Engineering
+            </span>
+
+            <h1>
+                Reliability Simulator
+            </h1>
+
+            <p class="hero-description">
+                Explore how distributed systems respond to failures using
+                Circuit Breakers, Retry with Exponential Backoff,
+                and Chaos Engineering.
+            </p>
+
+        </div>
+
+    </header>
+
+
+    <!-- Main -->
+
+    <main class="container">
+
+        <!-- Configuration Panel -->
+
+        <section class="panel">
+
+            <div class="panel-header">
+
+                <h2>
+                    Simulation Configuration
+                </h2>
+
+                <p>
+                    Configure the experiment before running the simulator.
+                </p>
+
+            </div>
+
+            <form
+                id="simulation-form"
+                class="simulation-form"
+            >
+
+                <!-- Services -->
+
+                <div class="form-group">
+
+                    <label for="services">
+                        Services
+                    </label>
+
+                    <select
+                        id="services"
+                        multiple
+                    >
+                        <option selected>
+                            auth
+                        </option>
+
+                        <option selected>
+                            payments
+                        </option>
+
+                        <option selected>
+                            notifications
+                        </option>
+                    </select>
+
+                    <small>
+                        Hold Ctrl (Windows) or Command (macOS) to
+                        select multiple services.
+                    </small>
+
+                </div>
+
+
+                <!-- Iterations -->
+
+                <div class="form-group">
+
+                    <label for="iterations">
+                        Iterations
+                    </label>
+
+                    <input
+                        id="iterations"
+                        type="number"
+                        min="1"
+                        max="10000"
+                        value="100"
+                    >
+
+                </div>
+
+
+                <!-- Failure Rate -->
+
+                <div class="form-group">
+
+                    <label for="failure-rate">
+                        Failure Rate
+                    </label>
+
+                    <div class="slider-row">
+
+                        <input
+                            id="failure-rate"
+                            type="range"
+                            min="0"
+                            max="100"
+                            value="15"
+                        >
+
+                        <span id="failure-rate-value">
+                            15%
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Retry Attempts -->
+
+                <div class="form-group">
+
+                    <label for="retry-attempts">
+                        Retry Attempts
+                    </label>
+
+                    <input
+                        id="retry-attempts"
+                        type="number"
+                        min="0"
+                        max="10"
+                        value="3"
+                    >
+
+                </div>
+
+
+                <!-- Circuit Threshold -->
+
+                <div class="form-group">
+
+                    <label for="breaker-threshold">
+                        Circuit Breaker Threshold
+                    </label>
+
+                    <input
+                        id="breaker-threshold"
+                        type="number"
+                        min="1"
+                        max="20"
+                        value="3"
+                    >
+
+                </div>
+
+
+                <!-- Latency -->
+
+                <div class="form-group">
+
+                    <label for="latency">
+                        Maximum Latency (ms)
+                    </label>
+
+                    <input
+                        id="latency"
+                        type="number"
+                        min="0"
+                        max="5000"
+                        value="100"
+                    >
+
+                </div>
+
+
+                <!-- Random Seed -->
+
+                <div class="form-group">
+
+                    <label for="random-seed">
+                        Random Seed
+                    </label>
+
+                    <input
+                        id="random-seed"
+                        type="number"
+                        value="42"
+                    >
+
+                </div>
+
+
+                <!-- Actions -->
+
+                <div class="actions">
+
+                    <button
+                        id="run-button"
+                        type="submit"
+                        class="primary-button"
+                    >
+                        Run Simulation
+                    </button>
+
+                    <button
+                        id="reset-button"
+                        type="reset"
+                        class="secondary-button"
+                    >
+                        Reset
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+        
+        <section
+    id="results-section"
+    class="panel hidden"
+>
+
+    <!-- ================================================ -->
+    <!-- Status -->
+    <!-- ================================================ -->
+
+    <div
+        id="loading"
+        class="loading hidden"
+    >
+        <div class="spinner"></div>
+        <p>Running simulation...</p>
+    </div>
+
+    <div
+        id="error-message"
+        class="error hidden"
+    ></div>
+
+    <!-- ================================================ -->
+    <!-- Statistics -->
+    <!-- ================================================ -->
+
+    <div class="panel-header">
+
+        <h2>
+            Simulation Results
+        </h2>
+
+        <p>
+            Summary metrics generated by the simulator.
+        </p>
+
+    </div>
+
+    <div class="stats-grid">
+
+        <article class="stat-card">
+
+            <span class="stat-title">
+                Success Rate
+            </span>
+
+            <span
+                id="success-rate"
+                class="stat-value"
+            >
+                —
+            </span>
+
+        </article>
+
+        <article class="stat-card">
+
+            <span class="stat-title">
+                Failure Rate
+            </span>
+
+            <span
+                id="failure-rate-result"
+                class="stat-value"
+            >
+                —
+            </span>
+
+        </article>
+
+        <article class="stat-card">
+
+            <span class="stat-title">
+                Requests
+            </span>
+
+            <span
+                id="total-requests"
+                class="stat-value"
+            >
+                —
+            </span>
+
+        </article>
+
+        <article class="stat-card">
+
+            <span class="stat-title">
+                Retries
+            </span>
+
+            <span
+                id="retry-count"
+                class="stat-value"
+            >
+                —
+            </span>
+
+        </article>
+
+        <article class="stat-card">
+
+            <span class="stat-title">
+                Circuit Opens
+            </span>
+
+            <span
+                id="circuit-opens"
+                class="stat-value"
+            >
+                —
+            </span>
+
+        </article>
+
+        <article class="stat-card">
+
+            <span class="stat-title">
+                Avg Latency
+            </span>
+
+            <span
+                id="average-latency"
+                class="stat-value"
+            >
+                —
+            </span>
+
+        </article>
+
+    </div>
+
+    <!-- ================================================ -->
+    <!-- Circuit Breakers -->
+    <!-- ================================================ -->
+
+    <div class="table-section">
+
+        <h3>
+            Circuit Breakers
+        </h3>
+
+        <table>
+
+            <thead>
+
+            <tr>
+
+                <th>Service</th>
+
+                <th>State</th>
+
+                <th>Success</th>
+
+                <th>Failures</th>
+
+                <th>Consecutive</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody id="breaker-table">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- ================================================ -->
+    <!-- Request Trace -->
+    <!-- ================================================ -->
+
+    <div class="table-section">
+
+        <h3>
+            Execution Trace
+        </h3>
+
+        <table>
+
+            <thead>
+
+            <tr>
+
+                <th>#</th>
+
+                <th>Service</th>
+
+                <th>Status</th>
+
+                <th>Latency</th>
+
+                <th>Retries</th>
+
+                <th>Circuit</th>
+
+                <th>Failure</th>
+
+                <th>Message</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody id="trace-table">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+        
+
+        <section
+            id="results-section"
+            class="panel hidden"
+        >
+
+            <!--
+                Part 2 inserts:
+
+                - Summary cards
+                - Metrics dashboard
+                - Circuit breaker table
+                - Trace table
+                - Loading state
+            -->
+
+        </section>
+
+
+    <section class="panel about-panel">
+
+    <div class="panel-header">
+
+        <h2>
+            About This Project
+        </h2>
+
+    </div>
+
+    <div class="feature-grid">
+
+        <div class="feature-card">
+
+            <h3>
+                Circuit Breaker
+            </h3>
+
+            <p>
+                Prevents cascading failures by temporarily
+                rejecting requests after repeated failures.
+            </p>
+
+        </div>
+
+        <div class="feature-card">
+
+            <h3>
+                Retry
+            </h3>
+
+            <p>
+                Automatically retries transient failures
+                using exponential backoff.
+            </p>
+
+        </div>
+
+        <div class="feature-card">
+
+            <h3>
+                Chaos Engineering
+            </h3>
+
+            <p>
+                Injects realistic faults and latency
+                into a simulated distributed system.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+    </main>
+
+</div>
+
+<script src="/static/app.js"></script>
+<footer class="footer">
+
+    <p>
+        Reliability Simulator • FastAPI • Python •
+        Circuit Breaker • Retry • Chaos Engineering
+    </p>
+
+</footer>
+</body>
+</html>

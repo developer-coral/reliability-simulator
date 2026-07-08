@@ -1,0 +1,783 @@
+/* 
+   Reliability Simulator
+   Part 1
+
+   - Variables
+   - Reset
+   - Typography
+   - Layout
+   - Hero
+   - Panels
+   - Forms
+   - Buttons
+    */
+
+/* 
+   Variables
+    */
+
+:root {
+
+    --background: #0f172a;
+    --surface: #1e293b;
+    --surface-hover: #273449;
+
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+
+    --text: #f8fafc;
+    --text-secondary: #cbd5e1;
+
+    --border: #334155;
+
+    --shadow:
+        0 10px 30px rgba(0,0,0,.30);
+
+    --radius: 12px;
+
+    --transition: .2s ease;
+
+    --container: 1200px;
+}
+
+/* 
+   Reset
+    */
+
+*,
+*::before,
+*::after{
+
+    box-sizing:border-box;
+
+    margin: 0;
+
+    padding: 0;
+}
+
+html{
+
+    scroll-behavior:smooth;
+}
+
+body{
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background:var(--background);
+
+    color:var(--text);
+
+    line-height:1.6;
+}
+
+img{
+
+    display:block;
+
+    max-width:100%;
+}
+
+button,
+input,
+select{
+
+    font:inherit;
+}
+
+/* 
+   Typography
+    */
+
+h1{
+
+    font-size:3rem;
+
+    line-height:1.1;
+
+    font-weight:700;
+
+    margin-bottom:1rem;
+}
+
+h2{
+
+    font-size:1.8rem;
+
+    margin-bottom:.5rem;
+}
+
+h3{
+
+    font-size:1.2rem;
+}
+
+p{
+
+    color:var(--text-secondary);
+}
+
+small{
+
+    color:var(--text-secondary);
+}
+
+/* 
+   Layout
+    */
+
+.app{
+
+    min-height:100vh;
+
+    display:flex;
+
+    flex-direction:column;
+}
+
+.container{
+
+    width:min(
+        var(--container),
+        calc(100% - 3rem)
+    );
+
+    margin:auto;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:2rem;
+
+    padding-bottom:3rem;
+}
+
+/* 
+   Hero
+    */
+
+.hero{
+
+    padding:5rem 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            #172554,
+            #0f172a
+        );
+
+    border-bottom:1px solid var(--border);
+}
+
+.hero-content{
+
+    width:min(
+        var(--container),
+        calc(100% - 3rem)
+    );
+
+    margin:auto;
+}
+
+.badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    padding:.35rem .9rem;
+
+    margin-bottom:1rem;
+
+    border-radius:999px;
+
+    background:rgba(59,130,246,.15);
+
+    color:#93c5fd;
+
+    font-size:.85rem;
+
+    font-weight:600;
+
+    letter-spacing:.03em;
+}
+
+.hero-description{
+
+    max-width:720px;
+
+    font-size:1.1rem;
+}
+
+/* 
+   Panels
+    */
+
+.panel{
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius);
+
+    padding:4rem;
+
+    box-shadow:var(--shadow);
+
+    margin-top:1rem;
+}
+
+.panel-header{
+
+    margin-bottom:2rem;
+}
+
+.panel-header p{
+
+    margin-top:.4rem;
+}
+
+/* 
+   Form
+    */
+
+.simulation-form{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(260px,1fr)
+        );
+
+    gap:1.5rem;
+}
+
+.form-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:.6rem;
+}
+
+.form-group label{
+
+    font-weight:600;
+
+    color:var(--text);
+}
+
+.form-group input,
+.form-group select{
+
+    background:#111827;
+
+    color:var(--text);
+
+    border:1px solid var(--border);
+
+    border-radius:10px;
+
+    padding:.85rem 1rem;
+
+    transition:var(--transition);
+}
+
+.form-group input:focus,
+.form-group select:focus{
+
+    outline:none;
+
+    border-color:var(--primary);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(59,130,246,.20);
+}
+
+.form-group select{
+
+    min-height:120px;
+}
+
+.slider-row{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:1rem;
+}
+
+.slider-row input{
+
+    flex:1;
+}
+
+#failure-rate-value{
+
+    min-width:56px;
+
+    text-align:right;
+
+    font-weight:700;
+
+    color:var(--primary);
+}
+
+/* 
+   Buttons
+    */
+
+.actions{
+
+    grid-column:1/-1;
+
+    display:flex;
+
+    gap:1rem;
+
+    margin-top:.5rem;
+}
+
+.primary-button,
+.secondary-button{
+
+    cursor:pointer;
+
+    border:none;
+
+    border-radius:10px;
+
+    padding:.95rem 1.5rem;
+
+    font-weight:600;
+
+    transition:var(--transition);
+}
+
+.primary-button{
+
+    background:var(--primary);
+
+    color:white;
+}
+
+.primary-button:hover{
+
+    background:var(--primary-hover);
+
+    transform:translateY(-2px);
+}
+
+.secondary-button{
+
+    background:#334155;
+
+    color:var(--text);
+}
+
+.secondary-button:hover{
+
+    background:#475569;
+
+    transform:translateY(-2px);
+}
+
+.primary-button:active,
+.secondary-button:active{
+
+    transform:translateY(0);
+}
+
+/* 
+   Statistics Dashboard
+    */
+
+.stats-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(180px, 1fr));
+
+    gap: 1.5rem;
+
+    margin-top: 2rem;
+
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+
+    background: #111827;
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    padding: 1.5rem;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: .75rem;
+
+    transition: var(--transition);
+}
+
+.stat-card:hover {
+
+    transform: translateY(-4px);
+
+    border-color: var(--primary);
+
+    background: var(--surface-hover);
+}
+
+.stat-title {
+
+    font-size: .85rem;
+
+    color: var(--text-secondary);
+
+    text-transform: uppercase;
+
+    letter-spacing: .05em;
+}
+
+.stat-value {
+
+    font-size: 2rem;
+
+    font-weight: 700;
+}
+
+
+/* 
+   Tables
+    */
+
+.table-section {
+
+    margin-top: 2.5rem;
+}
+
+.table-section h3 {
+
+    margin-bottom: 1rem;
+}
+
+.table-section {
+
+    overflow-x: auto;
+}
+
+table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 900px;
+}
+
+thead {
+
+    background: #111827;
+}
+
+th {
+
+    text-align: left;
+
+    padding: 1rem;
+
+    border-bottom: 1px solid var(--border);
+
+    font-size: .85rem;
+
+    color: var(--text-secondary);
+
+    text-transform: uppercase;
+}
+
+td {
+
+    padding: .95rem 1rem;
+
+    border-bottom: 1px solid var(--border);
+}
+
+tbody tr {
+
+    transition: var(--transition);
+}
+
+tbody tr:hover {
+
+    background: rgba(255,255,255,.03);
+}
+
+
+/* 
+   Status Colours
+    */
+
+.status-success {
+
+    color: var(--success);
+
+    font-weight: 600;
+}
+
+.status-warning {
+
+    color: var(--warning);
+
+    font-weight: 600;
+}
+
+.status-danger {
+
+    color: var(--danger);
+
+    font-weight: 600;
+}
+
+
+/* 
+   Feature Cards
+    */
+
+.feature-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(260px,1fr));
+
+    gap: 1.5rem;
+}
+
+.feature-card {
+
+    background: #111827;
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    padding: 1.5rem;
+
+    transition: var(--transition);
+}
+
+.feature-card:hover {
+
+    border-color: var(--primary);
+
+    transform: translateY(-4px);
+}
+
+.feature-card h3 {
+
+    margin-bottom: .75rem;
+}
+
+.feature-card p {
+
+    color: var(--text-secondary);
+}
+
+
+/* 
+   Loading Spinner
+    */
+
+.loading {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 1rem;
+
+    padding: 3rem 0;
+}
+
+.spinner {
+
+    width: 52px;
+
+    height: 52px;
+
+    border-radius: 50%;
+
+    border: 5px solid rgba(255,255,255,.15);
+
+    border-top-color: var(--primary);
+
+    animation: spin .9s linear infinite;
+}
+
+
+/* 
+   Error
+    */
+
+.error {
+
+    margin-bottom: 2rem;
+
+    padding: 1rem 1.25rem;
+
+    border-radius: 10px;
+
+    background: rgba(239,68,68,.15);
+
+    border: 1px solid rgba(239,68,68,.35);
+
+    color: #fecaca;
+}
+
+
+/* 
+   Utilities
+    */
+
+.hidden {
+
+    display: none !important;
+}
+
+.text-center {
+
+    text-align: center;
+}
+
+
+/* 
+   Footer
+    */
+
+.footer {
+
+    margin-top: auto;
+
+    padding: 2rem;
+
+    text-align: center;
+
+    border-top: 1px solid var(--border);
+
+    color: var(--text-secondary);
+
+    font-size: .9rem;
+}
+
+
+/* 
+   Animation
+    */
+
+@keyframes spin {
+
+    from {
+
+        transform: rotate(0deg);
+    }
+
+    to {
+
+        transform: rotate(360deg);
+    }
+}
+
+
+/* 
+   Responsive
+    */
+
+@media (max-width: 900px) {
+
+    h1 {
+
+        font-size: 2.25rem;
+    }
+
+    .hero {
+
+        padding: 3rem 0;
+    }
+
+    .panel {
+
+        padding: 1.5rem;
+    }
+
+    .actions {
+
+        flex-direction: column;
+    }
+
+    .primary-button,
+    .secondary-button {
+
+        width: 100%;
+    }
+
+    table {
+
+        min-width: 700px;
+    }
+}
+
+@media (max-width: 640px) {
+
+    .container {
+
+        width: calc(100% - 1.5rem);
+    }
+
+    .simulation-form {
+
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    h1 {
+
+        font-size: 2rem;
+    }
+
+    .hero-description {
+
+        font-size: 1rem;
+    }
+}
