@@ -89,7 +89,7 @@ async def configuration():
             "payments",
             "notifications",
         ],
-        "default_iterations": 100,
+        "default_iterations": 50,
         "default_failure_rate": 0.15,
         "default_retry_attempts": 3,
         "default_breaker_threshold": 3,
